@@ -4,10 +4,9 @@ import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native
 import { Dimensions } from 'react-native'
 
 export default function App() {
-  
-  
-  const [refresh, setRefresh] = react.useState(false)
-  const [board, setBoard] = react.useState(
+  const [ number, setNumber ] = react.useState(-1)
+  const [ refresh, setRefresh ] = react.useState(false)
+  const [ board, setBoard ] = react.useState(
     [
       "1","2"," "," "," "," "," "," "," ",
       " "," "," "," "," "," "," "," "," ",
@@ -20,10 +19,21 @@ export default function App() {
       " "," "," "," "," "," "," "," ","9"
     ]
   )
-  
+  const [ keyboard, setKeyboard ] = react.useState(
+    [
+      "1", "2", "3", "4", "5", "6", "7", "8", "9"
+    ]
+  )
+
   const fieldPress = (index) => {
     let newBoard = board
-    style
+    //First case check
+    number == -1 ? 
+    alert("Please click on a number") : (
+      newBoard[index] = number,
+      setBoard(newBoard),
+      setRefresh(!refresh)
+    )
   }
   
   return (
@@ -42,13 +52,24 @@ export default function App() {
       </TouchableOpacity>
       }
       />
+      <FlatList
+      style={styles.keyboard}
+      data={keyboard}
+      numColumns={3}
+      refreshing={true}
+      extraData={refresh}
+      renderItem={({item, index}) =>
+      <TouchableOpacity style={styles.square} onPress={() => setNumber(index+1)}>
+        <Text style={styles.number}>{item}</Text>
+      </TouchableOpacity>
+      }
+      />
     </View>
   );
 }
 
 const vw = Dimensions.get('window').width/100
 const squareSize = 10
-
 const styles = StyleSheet.create({
   
   container: {
@@ -77,4 +98,5 @@ const styles = StyleSheet.create({
     margin: 2,
     backgroundColor: 'white'
   }
+
 });
