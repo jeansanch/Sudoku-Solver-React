@@ -19,12 +19,12 @@ export default function App() {
       " "," "," "," "," "," "," "," ","9"
     ]
   )
-  const [ keyboard, setKeyboard ] = react.useState(
+  const [ keyboard ] = react.useState(
     [
       "1", "2", "3", "4", "5", "6", "7", "8", "9"
     ]
   )
-
+  
   const fieldPress = (index) => {
     let newBoard = board
     //First case check
@@ -36,10 +36,18 @@ export default function App() {
     )
   }
   
+  const checkIndex = (n, side) => {
+    if (side == "r")
+      return (n+1) % 3 == 0    
+    else
+      return ((n > 17 && n < 27) || (n > 44 && n < 54) || (n > 71 && n < 81))
+  }
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
       <Text style={styles.title}>Sudoku Solver</Text>
+
       <FlatList 
       style={styles.table}
       data={board}
@@ -47,11 +55,12 @@ export default function App() {
       refreshing={true}
       extraData={refresh}
       renderItem={({item, index}) => 
-      <TouchableOpacity style={styles.square} onPress={() => fieldPress(index)}>
+      <TouchableOpacity style={[styles.square, {borderRightWidth: checkIndex(index, "r") ? 3 : 1}, {borderBottomWidth: checkIndex(index, "b") ? 3 : 1}]} onPress={() => fieldPress(index)}>
         <Text style={styles.number}>{item}</Text>
       </TouchableOpacity>
       }
       />
+
       <FlatList
       style={styles.keyboard}
       data={keyboard}
@@ -84,7 +93,9 @@ const styles = StyleSheet.create({
   },
 
   table:{
-    backgroundColor: 'black'
+    backgroundColor: 'black', 
+    margin: 0,
+    padding: 0
   },
 
   number: {
@@ -95,7 +106,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     width: squareSize*vw,
     height: squareSize*vw,
-    margin: 2,
+    margin: 1,
     backgroundColor: 'white'
   }
 
