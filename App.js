@@ -21,7 +21,7 @@ export default function App() {
   )
   const [ keyboard ] = react.useState(
     [
-      "1", "2", "3", "4", "5", "6", "7", "8", "9"
+      "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "Clear"
     ]
   )
   
@@ -38,9 +38,9 @@ export default function App() {
   
   const checkIndex = (n, side) => {
     if (side == "r")
-      return (n+1) % 3 == 0    
+      return (n+1) % 3 == 0 && (n+1) % 9 != 0   
     else
-      return ((n > 17 && n < 27) || (n > 44 && n < 54) || (n > 71 && n < 81))
+      return ((n > 17 && n < 27) || (n > 44 && n < 54))
   }
 
   return (
@@ -49,7 +49,7 @@ export default function App() {
       <Text style={styles.title}>Sudoku Solver</Text>
 
       <FlatList 
-      style={styles.table}
+      style={[styles.table, {padding: 1}]}
       data={board}
       numColumns={9}
       refreshing={true}
@@ -69,7 +69,7 @@ export default function App() {
       extraData={refresh}
       renderItem={({item, index}) =>
       <TouchableOpacity style={styles.square} onPress={() => setNumber(index+1)}>
-        <Text style={styles.number}>{item}</Text>
+        <Text style={styles.numberButton}>{item}</Text>
       </TouchableOpacity>
       }
       />
@@ -93,12 +93,17 @@ const styles = StyleSheet.create({
   },
 
   table:{
-    backgroundColor: 'black', 
+    border: 10,
+    // backgroundColor: 'black', 
     margin: 0,
-    padding: 0
+    padding: 0,
   },
 
   number: {
+    padding: 1,
+    bottom: 4,
+    textAlign: 'center',
+    fontSize: 30,
     color: 'black'
   },
 
